@@ -54,6 +54,7 @@ def send_transaction_matic_to_wmatic(account):
     tx_hash = w3.eth.send_raw_transaction(signed.rawTransaction)
     tx_hash_string = tx_hash.hex()
     print( tx_hash_string)
+    
 #TODO: 
 #가스비 높아서 트잭 지연될 때 {'code': -32000, 'message': 'replacement transaction underpriced'} 오류 해결
 #가스비 적게 값 바꾸기
@@ -61,7 +62,7 @@ def send_transaction_matic_to_wmatic(account):
 
 # 설정법: secrets.json 파일 만들고 아래 형식대로 ~~~에 개인키 넣기
 # {
-#     "eth_private_key": "~~~"
+#     "eth_private_key": ["~~~"]
 # }
 
 # 파이썬 정밀한 소수 계산법이 이상해서 임시로 Wei값 직접 적음
@@ -84,10 +85,11 @@ for eth_private_key in eth_private_keys:
     accounts.append(account)     
     print(f"Your wallet address is {account.address}")
 
-for account in accounts:
-    try:
-        send_transaction_for_airdrop(account)
-        time.sleep(10)
-    except:
-        print("가스비를 높여주세요.")
-        time.sleep(60)
+while True:
+    for account in accounts:
+        try:
+            send_transaction_for_airdrop(account)
+            time.sleep(10)
+        except:
+            print("가스비를 높여주세요.")
+            time.sleep(60)
