@@ -70,7 +70,7 @@ def send_transaction_matic_to_wmatic(account):
 # amountInWei = Web3.to_wei(amountInEther, 'ether')
 # print(amountInWei)
 gas = 2000000
-max_gwei = '160'
+max_gwei = '201'
 max_priority_gwei = '40'
 amountInWei = 19996020692399520915
 
