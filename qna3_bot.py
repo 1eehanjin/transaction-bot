@@ -16,7 +16,7 @@ import random
     }
     적고 저장
     * user_data_dir는 기존 구글 데이터가 있는 폴더가 아니라 아예 새로운 구글 데이터를 저장할 임의의 폴더로 적어놓기
-2. 크롬드라이버 버전맞춰 다운로드
+2. 크롬드라이버 버전맞춰 다운로드, 파이썬 패키지 다운로드(pip install ~)
 3. IS_SETTING_MODE = True로 하여 크롬 열고  메타마스크 계정 설정
     - 아예 새로운 프로필로 크롬 잘 열리는지 확인하고(프로필이 하나만 있어야 함)
     - 메타마스크 다운받고 지갑 새로 만들기
@@ -24,18 +24,19 @@ import random
     - 각 계정별 BNB, opBNB 극소량 보내놓고
     - 돌릴 계정의 이름이 "계정 2" < 양식인지 확인한다. 아마 첫번째 계정은 'Account 1'로 되어있을 텐데 이거때문에 START_ACCOUNT_NUM 2로 돌려야할 듯
     - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
-    - BNB, opBNB 추가허용
-    - 메타마스크 처음 뜨는 새로운 정보 팝업도 한번 닫아주고 돌려야함
+    - BNB, opBNB 추가(qna홈페이지에서 전환 한 번씩)
+    - 메타마스크 처음 뜨는 '새로운 소식' 팝업도 한번 닫아주고 돌려야함
 4. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록)
 5. IS_SETTING_MODE = False로 바꾸고 실행 
 6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
+7. vote 수정하려면 270번대줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
 """
 IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 10
+START_ACCOUNT_NUM = 12
 END_ACCOUNT_NUM = 16
 
 QUESTIONS = [
