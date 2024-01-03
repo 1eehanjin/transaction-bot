@@ -6,9 +6,99 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
+import random
+
+"""
+1. secrets.json 파일 만들어서
+    {
+        "user_data_dir": "구글 데이터 저장할 새로운 폴더", 
+        "metamask_password": "메타마스크 로그인 비밀번호(버너지갑)"
+    }
+    적고 저장
+    * user_data_dir는 기존 구글 데이터가 있는 폴더가 아니라 아예 새로운 구글 데이터를 저장할 임의의 폴더로 적어놓기
+2. IS_SETTING_MODE = True로 하여 크롬 열고 메타마스크 계정 설정
+    - 메타마스크 다운받고 지갑 새로 만들기
+    - 메타마스크 계정 왕창 추가
+    - 각 계정별 BNB, opBNB 극소량 보내놓고
+    - 돌릴 계정의 이름이 "계정 2" < 양식인지 확인한다. 아마 첫번째 계정은 'Account 1'로 되어있을 텐데 이거때문에 START_ACCOUNT_NUM 2로 돌려야할 듯
+    - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
+3. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호, 질문 목록)
+4. IS_SETTING_MODE = False로 바꾸고 실행 
+"""
+IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
-LONG_WAIT_TIME =10
+LONG_WAIT_TIME = 10
+
+START_ACCOUNT_NUM = 6
+END_ACCOUNT_NUM = 9
+
+QUESTIONS = [
+    "what is eth?",
+    "what is sats",
+    "what is bitcoin?",
+    "what is tia?",
+    "what is sei?",
+    "what is bonk?",
+    "what is sui?",
+    "what is doge?",
+    "what is ztx?",
+    "what is rndr?",
+    "what is wemix?",
+    "what is astr?",
+    "what is sol?",
+    "what is ace?",
+    "what is atom?",
+    "what is arkm",
+    "what is osmo?",
+    "what is grail?",
+    "what is klay?",
+    "what is gmx?",
+    "what is xai?",
+    "what is kiloex?",
+    "what is nfp?",
+    "what is ygg?",
+    "what is bnb?",
+    "what is lido?",
+    "what is ctc?",
+    "what is op?",
+    "what is nft?",
+    "what is osmo?",
+    "what is manta?",
+    "what is binance",
+    "what is nft?",
+    "what is okx?",
+    "what is alex?",
+    "what is backpack?",
+    "what is stx?",
+    "what is etc?",
+    "what is ordi?",
+    "what is gram"
+]
+
+
+def metamask_login():
+    driver.switch_to.window(all_tabs[0])
+    driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
+    time.sleep(SHORT_WAIT_TIME)
+    driver.find_element('xpath', '/html/body/div[1]/div/div[2]/div/div/form/div/div/input').send_keys(metamask_password)
+    driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/div/button').click()
+    time.sleep(SHORT_WAIT_TIME)
+
+def switch_metamask_account(account_number):
+    #계정 전환
+    driver.switch_to.window(all_tabs[0])
+    time.sleep(SHORT_WAIT_TIME)
+    account_change_button = driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button')
+    if account_change_button.text == f'계정 {account_number}':
+        print(f"이미 메타마스크 계정 {account_number}입니다.")
+    else:
+        account_change_button.click()
+        time.sleep(SHORT_WAIT_TIME)
+        driver.find_element("xpath", f"//*[text()='계정 {account_number}']").click()
+        time.sleep(SHORT_WAIT_TIME)
+        print(f"메타마스크 계정 {account_number}으로 전환되었습니다.")
+    driver.switch_to.window(all_tabs[1])
 
 def print_page_html():
     html = driver.page_source
@@ -39,7 +129,7 @@ def confirm_network_and_sign():
         if not confirm_network() and not confirm_sign():
              break
     driver.switch_to.window(all_tabs[1])
-    print("메타마스크 네트워크 전환, 사인창 확인 완료")
+    print("메타마스크 네트워크 전환, 서명 요청 제거 완료")
     time.sleep(SHORT_WAIT_TIME)
     
 
@@ -65,11 +155,14 @@ def confirm_transaction():
     time.sleep(SHORT_WAIT_TIME)
     driver.refresh()
     time.sleep(SHORT_WAIT_TIME)
-    try:
-        driver.find_element("xpath", "//button[contains(text(),'컨펌')]").click()
-        time.sleep(SHORT_WAIT_TIME)
-    except:
-         print("전송할 트랜잭션이 없습니다.")  
+    while True:
+        try:
+            driver.find_element("xpath", "//button[contains(text(),'컨펌')]").click()
+            break
+        except:
+            print("트랜잭션 버튼 활성화 대기중...")  
+            time.sleep(SHORT_WAIT_TIME)
+    time.sleep(SHORT_WAIT_TIME)
     driver.switch_to.window(all_tabs[1])
     time.sleep(SHORT_WAIT_TIME)
     print("트랜잭션 전송 완료")
@@ -85,7 +178,7 @@ def check_in():
     time.sleep(SHORT_WAIT_TIME)
     confirm_network_and_sign()
     confirm_transaction()
-    time.sleep(SHORT_WAIT_TIME)
+    time.sleep(LONG_WAIT_TIME)
     print("출석 완료")
 
 def switch_to_opbnb():
@@ -100,12 +193,20 @@ def switch_to_opbnb():
     time.sleep(SHORT_WAIT_TIME)
     print("출석체크 위해 opBNB 네트워크로 전환 완료")
 
-def qna(question):
+def send_qna():
+     question = random.choice(QUESTIONS)
      textarea= driver.find_element("xpath", '//*[@id="root"]/div[1]/div/div[2]/div/div[1]/div[1]/div/div[1]/textarea')
      textarea.send_keys(question)
      textarea.send_keys(Keys.ENTER)
      time.sleep(LONG_WAIT_TIME)
-     good_button_container = driver.find_element("class name", 'flex.justify-end.gap-4')
+     while True:
+        try:
+            good_button_container = driver.find_element("class name", 'flex.justify-end.gap-4')
+            break
+        except:
+            print("아직 질문에 대한 답변이 생성되지 않았습니다..")
+            time.sleep(LONG_WAIT_TIME)
+
      good_button = good_button_container.find_element("xpath", "./button")
      good_button.click()
      time.sleep(SHORT_WAIT_TIME)
@@ -120,49 +221,45 @@ def vote(number):
     confirm_network_and_sign()
     confirm_transaction()
     print("보팅 완료") 
-    driver.get("https://qna3.ai")
     time.sleep(LONG_WAIT_TIME)
      
+
 
 with open('./secrets.json') as f:
             secret_data = json.load(f)
             metamask_password = secret_data["metamask_password"]
             user_data_dir = secret_data["user_data_dir"]
-
-
 options = Options()
 options.add_argument(f"user-data-dir={user_data_dir}")
-options.add_argument("--profile-directory=profile 4")
+options.add_argument(f"--profile-directory=profile 1")
 options.add_experimental_option("detach", True)  # 화면이 꺼지지 않고 유지
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
-
 driver.execute_script("window.open('about:blank', '_blank');")
 all_tabs = driver.window_handles
 time.sleep(SHORT_WAIT_TIME)
 
-driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
-time.sleep(SHORT_WAIT_TIME)
-driver.find_element('xpath', '/html/body/div[1]/div/div[2]/div/div/form/div/div/input').send_keys(metamask_password)
-driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/div/button').click()
+if IS_SETTING_MODE:
+    print("설정을 위해 봇을 실행하지 않습니다.")
+else:
+    metamask_login()
+    for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
+        switch_metamask_account(i)
+        driver.get("https://qna3.ai/?code=kpKpcujE")
+        time.sleep(LONG_WAIT_TIME)
 
-driver.switch_to.window(all_tabs[1])
-driver.get("https://qna3.ai/?code=kpKpcujE")
-time.sleep(LONG_WAIT_TIME)
-
-
-try:
-    log_in()
-    confirm_network_and_sign()
-    qna("What is Sleepless AI and why is it so popular?")
-    vote(0)
-    switch_to_opbnb()
-    check_in()
-except Exception as e:
-    print(f"오류가 발생했습니다: {e}")
-    print_page_html()
-finally:
-    driver.switch_to.window(all_tabs[1])
+        try:
+            log_in()
+            confirm_network_and_sign()
+            send_qna()
+            vote(0)
+            switch_to_opbnb()
+            check_in()
+        except Exception as e:
+            print(f"오류가 발생했습니다: {e}")
+            print_page_html()
+        finally:
+            driver.switch_to.window(all_tabs[1])
 
 
 
