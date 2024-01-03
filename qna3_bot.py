@@ -16,7 +16,9 @@ import random
     }
     적고 저장
     * user_data_dir는 기존 구글 데이터가 있는 폴더가 아니라 아예 새로운 구글 데이터를 저장할 임의의 폴더로 적어놓기
-2. IS_SETTING_MODE = True로 하여 크롬 열고 메타마스크 계정 설정
+2. 크롬드라이버 버전맞춰 다운로드
+3. IS_SETTING_MODE = True로 하여 크롬 열고  메타마스크 계정 설정
+    - 아예 새로운 프로필로 크롬 잘 열리는지 확인하고(프로필이 하나만 있어야 함)
     - 메타마스크 다운받고 지갑 새로 만들기
     - 메타마스크 계정 왕창 추가
     - 각 계정별 BNB, opBNB 극소량 보내놓고
@@ -24,17 +26,17 @@ import random
     - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
     - BNB, opBNB 추가허용
     - 메타마스크 처음 뜨는 새로운 정보 팝업도 한번 닫아주고 돌려야함
-3. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록)
-4. IS_SETTING_MODE = False로 바꾸고 실행 
-5. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
+4. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록)
+5. IS_SETTING_MODE = False로 바꾸고 실행 
+6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
 """
 IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 6
-END_ACCOUNT_NUM = 9
+START_ACCOUNT_NUM = 10
+END_ACCOUNT_NUM = 16
 
 QUESTIONS = [
     "what is eth?",
@@ -94,13 +96,13 @@ def switch_metamask_account(account_number):
     time.sleep(SHORT_WAIT_TIME)
     account_change_button = driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button')
     if account_change_button.text == f'계정 {account_number}':
-        print(f"이미 메타마스크 계정 {account_number}입니다.")
+        print(f"** 이미 메타마스크 계정 {account_number}입니다.")
     else:
         account_change_button.click()
         time.sleep(SHORT_WAIT_TIME)
         driver.find_element("xpath", f"//*[text()='계정 {account_number}']").click()
         time.sleep(SHORT_WAIT_TIME)
-        print(f"메타마스크 계정 {account_number}으로 전환되었습니다.")
+        print(f"** 메타마스크 계정 {account_number}으로 전환되었습니다.")
     driver.switch_to.window(all_tabs[1])
 
 def print_page_html():
@@ -158,17 +160,20 @@ def confirm_transaction():
     time.sleep(SHORT_WAIT_TIME)
     driver.refresh()
     time.sleep(SHORT_WAIT_TIME)
-    while True:
+    for i in range(5):
         try:
             driver.find_element("xpath", "//button[contains(text(),'컨펌')]").click()
             break
         except:
             print("트랜잭션 버튼 활성화 대기중...")  
             time.sleep(SHORT_WAIT_TIME)
+    if i == 4:
+        print("트랜잭션 버튼을 찾지 못했습니다...원래 화면으로 되돌아갑니다.")
+    else:
+        print("트랜잭션 전송 성공")
     time.sleep(SHORT_WAIT_TIME)
     driver.switch_to.window(all_tabs[1])
     time.sleep(SHORT_WAIT_TIME)
-    print("트랜잭션 전송 완료")
     
 
 def check_in():
@@ -231,7 +236,7 @@ def vote(number):
     vote_buttons[number].click()
     time.sleep(SHORT_WAIT_TIME)
     confirm_transaction()
-    print("보팅 완료") 
+    print(f"{number}번 보팅 완료") 
     time.sleep(LONG_WAIT_TIME)
      
 
@@ -268,11 +273,12 @@ else:
             vote(2)
             switch_to_opbnb()
             check_in()
+            print(f">>{i}번 완료")
         except Exception as e:
-            print(f"오류가 발생했습니다: {e}")
+            print(f"!!{i}번 진행중 오류가 발생했습니다\n{e}")
             print_page_html()
         finally:
             driver.switch_to.window(all_tabs[1])
-
+    print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
 
 
