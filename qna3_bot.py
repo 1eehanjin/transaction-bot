@@ -26,7 +26,7 @@ import random
     - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
     - BNB, opBNB 추가(qna홈페이지에서 전환 한 번씩)
     - 메타마스크 처음 뜨는 '새로운 소식' 팝업도 한번 닫아주고 돌려야함
-4. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록)
+4. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록, 레퍼럴 링크 목록)
 5. IS_SETTING_MODE = False로 바꾸고 실행 
 6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
 7. vote 수정하려면 270번대줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
@@ -82,6 +82,11 @@ QUESTIONS = [
     "what is gram"
 ]
 
+REFERRAL_LINKS = [
+    "https://qna3.ai/?code=kpKpcujE", #0~19번
+    "https://qna3.ai/?code=H58QpM6s", #20~39번
+    "https://qna3.ai/?code=PKTexRsB", #40~59번
+]
 
 def metamask_login():
     driver.switch_to.window(all_tabs[0])
@@ -228,7 +233,7 @@ def send_qna():
      good_button.click()
      time.sleep(SHORT_WAIT_TIME)
      print("qna 및 따봉 완료")
-     driver.get("https://qna3.ai/")
+     driver.get(referrel_link)
      time.sleep(LONG_WAIT_TIME)
      confirm_network_and_sign()
 
@@ -262,9 +267,10 @@ else:
     metamask_login()
     for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
         switch_metamask_account(i)
-        driver.get("https://qna3.ai/?code=kpKpcujE")
+        referrel_link = REFERRAL_LINKS[i/20]
+        driver.get(referrel_link)
         time.sleep(LONG_WAIT_TIME)
-
+        print(f"{i}번 레퍼럴링크:  {referrel_link}")
         try:
             log_in()
             confirm_network_and_sign()
