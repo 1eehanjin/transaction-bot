@@ -56,8 +56,6 @@ def send_transaction_matic_to_wmatic(account):
     print( tx_hash_string)
     
 #TODO: 
-#가스비 높아서 트잭 지연될 때 {'code': -32000, 'message': 'replacement transaction underpriced'} 오류 해결
-#가스비 적게 값 바꾸기
 #swap으로 바꾸기
 
 # 설정법: secrets.json 파일 만들고 아래 형식대로 ~~~에 개인키 넣기
