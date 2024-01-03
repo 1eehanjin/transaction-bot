@@ -11,7 +11,7 @@ import random
 """
 1. secrets.json 파일 만들어서
     {
-        "user_data_dir": "구글 데이터 저장할 새로운 폴더", 
+        "user_data_dir": "구글 데이터 저장할 새로운 폴더 경로", 
         "metamask_password": "메타마스크 로그인 비밀번호(버너지갑)"
     }
     적고 저장
@@ -22,8 +22,11 @@ import random
     - 각 계정별 BNB, opBNB 극소량 보내놓고
     - 돌릴 계정의 이름이 "계정 2" < 양식인지 확인한다. 아마 첫번째 계정은 'Account 1'로 되어있을 텐데 이거때문에 START_ACCOUNT_NUM 2로 돌려야할 듯
     - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
-3. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호, 질문 목록)
+    - BNB, opBNB 추가허용
+    - 메타마스크 처음 뜨는 새로운 정보 팝업도 한번 닫아주고 돌려야함
+3. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록)
 4. IS_SETTING_MODE = False로 바꾸고 실행 
+5. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
 """
 IS_SETTING_MODE = False
 
@@ -176,7 +179,7 @@ def check_in():
          return
     check_in_button.click()
     time.sleep(SHORT_WAIT_TIME)
-    confirm_network_and_sign()
+    #confirm_network_and_sign()
     confirm_transaction()
     time.sleep(LONG_WAIT_TIME)
     print("출석 완료")
@@ -199,13 +202,21 @@ def send_qna():
      textarea.send_keys(question)
      textarea.send_keys(Keys.ENTER)
      time.sleep(LONG_WAIT_TIME)
+     count = 0
      while True:
+        if count > 5:
+            count = 0
+            driver.refresh()
+            time.sleep(LONG_WAIT_TIME)
+            confirm_network_and_sign()
         try:
             good_button_container = driver.find_element("class name", 'flex.justify-end.gap-4')
             break
         except:
             print("아직 질문에 대한 답변이 생성되지 않았습니다..")
+            count +=1
             time.sleep(LONG_WAIT_TIME)
+            
 
      good_button = good_button_container.find_element("xpath", "./button")
      good_button.click()
@@ -213,12 +224,12 @@ def send_qna():
      print("qna 및 따봉 완료")
      driver.get("https://qna3.ai/")
      time.sleep(LONG_WAIT_TIME)
+     confirm_network_and_sign()
 
 def vote(number):
     vote_buttons = driver.find_elements("xpath", "//*[text()='Vote']")
     vote_buttons[number].click()
     time.sleep(SHORT_WAIT_TIME)
-    confirm_network_and_sign()
     confirm_transaction()
     print("보팅 완료") 
     time.sleep(LONG_WAIT_TIME)
@@ -253,6 +264,8 @@ else:
             confirm_network_and_sign()
             send_qna()
             vote(0)
+            vote(1)
+            vote(2)
             switch_to_opbnb()
             check_in()
         except Exception as e:
