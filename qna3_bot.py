@@ -23,21 +23,22 @@ import random
     - 메타마스크 계정 왕창 추가
     - 각 계정별 BNB, opBNB 극소량 보내놓고
     - 돌릴 계정의 이름이 "계정 2" < 양식인지 확인한다. 아마 첫번째 계정은 'Account 1'로 되어있을 텐데 이거때문에 START_ACCOUNT_NUM 2로 돌려야할 듯
-    - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기
+    - 디앱 처음 접속할때 'Metamask로 연결' 모든 계정 체크해서 연결해놓기 *일괄 연결을 위해선 '모든 계정 연결 해제' 뒤 해야 함
     - BNB, opBNB 추가(qna홈페이지에서 전환 한 번씩)
     - 메타마스크 처음 뜨는 '새로운 소식' 팝업도 한번 닫아주고 돌려야함
 4. 바로 밑의 상수 변경(기다리는 시간, 시작 계정 번호, 끝나는 계정 번호 + 1, 질문 목록, 레퍼럴 링크 목록)
 5. IS_SETTING_MODE = False로 바꾸고 실행 
 6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
 7. vote 수정하려면 270번대줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
+8. 실행 전 꼭 저장하고 시작
 """
 IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 12
-END_ACCOUNT_NUM = 16
+START_ACCOUNT_NUM = 15
+END_ACCOUNT_NUM = 37
 
 QUESTIONS = [
     "what is eth?",
@@ -267,7 +268,7 @@ else:
     metamask_login()
     for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
         switch_metamask_account(i)
-        referrel_link = REFERRAL_LINKS[i/20]
+        referrel_link = REFERRAL_LINKS[i//20]
         driver.get(referrel_link)
         time.sleep(LONG_WAIT_TIME)
         print(f"{i}번 레퍼럴링크:  {referrel_link}")
@@ -277,7 +278,7 @@ else:
             send_qna()
             vote(0)
             vote(1)
-            vote(2)
+            #vote(2)
             switch_to_opbnb()
             check_in()
             print(f">>{i}번 완료")
