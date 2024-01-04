@@ -37,7 +37,7 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 15
+START_ACCOUNT_NUM = 27
 END_ACCOUNT_NUM = 37
 
 QUESTIONS = [
@@ -277,7 +277,7 @@ else:
             confirm_network_and_sign()
             send_qna()
             vote(0)
-            vote(1)
+            #vote(1)
             #vote(2)
             switch_to_opbnb()
             check_in()
