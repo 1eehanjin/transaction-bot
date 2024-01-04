@@ -37,8 +37,8 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 27
-END_ACCOUNT_NUM = 37
+START_ACCOUNT_NUM = 22
+END_ACCOUNT_NUM = 25
 
 QUESTIONS = [
     "what is eth?",
@@ -117,12 +117,20 @@ def print_page_html():
     soup = BeautifulSoup(html, 'html.parser')
     print(soup.text)
 
-def log_in():
+def log_out():
     try:
-        login_button = driver.find_element("xpath", "//*[contains(text(),'Sign In')]")
+        driver.find_element("class name", 'hidden.overflow-hidden.text-ellipsis.font-medium.text-white.md\\:block').click()
+        time.sleep(SHORT_WAIT_TIME)
+        driver.find_element("xpath", "//*[contains(text(),'Sign Out')]").click()
+        time.sleep(LONG_WAIT_TIME)
     except:
-         print("이미 로그인 되어있습니다")
-         return
+        print("이미 로그아웃 되어있습니다.")
+
+    
+    
+
+def log_in():
+    login_button = driver.find_element("xpath", "//*[contains(text(),'Sign In')]")
     login_button.click()
     time.sleep(SHORT_WAIT_TIME)
     driver.find_element("xpath", '/html/body/div[5]/div/div/div/div/div[2]/div/button').click()
@@ -131,6 +139,7 @@ def log_in():
         driver.find_element("xpath", '/html/body/div[18]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button').click()
     except:
          print("지갑선택창 스킵됨")
+    print("로그인 완료")
 
 def confirm_network_and_sign():
     driver.switch_to.window(all_tabs[0])
@@ -273,6 +282,7 @@ else:
         time.sleep(LONG_WAIT_TIME)
         print(f"{i}번 레퍼럴링크:  {referrel_link}")
         try:
+            log_out()
             log_in()
             confirm_network_and_sign()
             send_qna()
