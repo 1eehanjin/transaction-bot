@@ -40,20 +40,15 @@ import message_sender
         * 본인 레퍼럴 링크로 꼭 변경 . 돌릴 계정 수 / 20 개는 넣어놔야 한다.
 5. IS_SETTING_MODE = False로 바꾸고 실행 
 6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
-<<<<<<< HEAD
-7. vote 수정하려면 270번대줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
-8. 실행 전 꼭 저장하고 시작 
-=======
 7. vote 수정하려면 299번 ~ 301번 줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
 8. 실행 전 꼭 저장하고 시작
->>>>>>> 7c1e2f948a1a48a44b476b607dc6967b873cb6bf
 """
 IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 2
+START_ACCOUNT_NUM = 51
 END_ACCOUNT_NUM = 200 
 
 QUESTIONS = [
@@ -153,13 +148,15 @@ def log_out():
     
 
 def log_in():
-    login_button = driver.find_element("xpath", "//*[contains(text(),'Sign In')]")
-    login_button.click()
-    time.sleep(SHORT_WAIT_TIME)
-    driver.find_element("xpath", '/html/body/div[5]/div/div/div/div/div[2]/div/button').click()
+    # login_button = driver.find_element("xpath", "//*[contains(text(),'Sign In')]")
+    # login_button.click()
+    # time.sleep(SHORT_WAIT_TIME)
+    # driver.find_element("xpath", '/html/body/div[5]/div/div/div/div/div[2]/div/button').click()
+    # time.sleep(SHORT_WAIT_TIME)
+    driver.find_element("xpath",  '//*[@id="root"]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div[3]/div/div[1]/div/button').click()
     time.sleep(SHORT_WAIT_TIME)
     try:
-        driver.find_element("xpath", '/html/body/div[18]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button').click()
+        driver.find_element("xpath", '/html/body/div[16]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button/div/div').click()
     except:
          print("지갑선택창 스킵됨")
     print("로그인 완료")
