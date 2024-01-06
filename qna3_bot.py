@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
 import random
+import message_sender
 
 """
 1. secrets.json 파일 만들어서
@@ -30,15 +31,15 @@ import random
 5. IS_SETTING_MODE = False로 바꾸고 실행 
 6. 실행하자마자 오류나면 크롬 이 프로필 창 실행되고있나 체크 !
 7. vote 수정하려면 270번대줄에서 vote(0) vote(1) vote(2) 부분 지우거나 숫자 바꾸면 된다(숫자는 n번째 Vote 버튼 클릭 의미)
-8. 실행 전 꼭 저장하고 시작
+8. 실행 전 꼭 저장하고 시작 
 """
 IS_SETTING_MODE = False
 
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 22
-END_ACCOUNT_NUM = 25
+START_ACCOUNT_NUM = 2
+END_ACCOUNT_NUM = 200 
 
 QUESTIONS = [
     "what is eth?",
@@ -85,8 +86,15 @@ QUESTIONS = [
 
 REFERRAL_LINKS = [
     "https://qna3.ai/?code=kpKpcujE", #0~19번
-    "https://qna3.ai/?code=H58QpM6s", #20~39번
-    "https://qna3.ai/?code=PKTexRsB", #40~59번
+    "https://qna3.ai/?code=H58QpM6s", #20~39번 계정2
+    "https://qna3.ai/?code=PKTexRsB", #40~59번 계정3
+    "https://qna3.ai/?code=JuAfuffW",
+    "https://qna3.ai/?code=MWfhWuPc",
+    "https://qna3.ai/?code=bwPDrEp3",
+    "https://qna3.ai/?code=g9XR4UEW",
+    "https://qna3.ai/?code=VNDR6rJH",
+    "https://qna3.ai/?code=z97hpb36",
+    "https://qna3.ai/?code=3a5wgqZc"
 ]
 
 def metamask_login():
@@ -286,7 +294,7 @@ else:
             log_in()
             confirm_network_and_sign()
             send_qna()
-            vote(0)
+            #vote(0)
             #vote(1)
             #vote(2)
             switch_to_opbnb()
@@ -294,7 +302,7 @@ else:
             print(f">>{i}번 완료")
         except Exception as e:
             print(f"!!{i}번 진행중 오류가 발생했습니다\n{e}")
-            print_page_html()
+            message_sender.send_telegram_message(f"!!qna3 {i}번계정 진행중 오류가 발생했습니다\n{e}")
         finally:
             driver.switch_to.window(all_tabs[1])
     print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
