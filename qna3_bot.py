@@ -48,51 +48,99 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 51
-END_ACCOUNT_NUM = 200 
+START_ACCOUNT_NUM = 56
+END_ACCOUNT_NUM = 200
 
-QUESTIONS = [
-    "what is eth?",
-    "what is sats",
-    "what is bitcoin?",
-    "what is tia?",
-    "what is sei?",
-    "what is bonk?",
-    "what is sui?",
-    "what is doge?",
-    "what is ztx?",
-    "what is rndr?",
-    "what is wemix?",
-    "what is astr?",
-    "what is sol?",
-    "what is ace?",
-    "what is atom?",
-    "what is arkm",
-    "what is osmo?",
-    "what is grail?",
-    "what is klay?",
-    "what is gmx?",
-    "what is xai?",
-    "what is kiloex?",
-    "what is nfp?",
-    "what is ygg?",
-    "what is bnb?",
-    "what is lido?",
-    "what is ctc?",
-    "what is op?",
-    "what is nft?",
-    "what is osmo?",
-    "what is manta?",
-    "what is binance",
-    "what is nft?",
-    "what is okx?",
-    "what is alex?",
-    "what is backpack?",
-    "what is stx?",
-    "what is etc?",
-    "what is ordi?",
-    "what is gram"
-]
+QUESTIONS = ["How did South Korea's victory at the 2023 League of Legends World "
+ 'Championship impact the cryptocurrency market?',
+ "Did South Korea's victory in the League of Legends World Championship lead "
+ 'to increased interest in cryptocurrencies?',
+ 'What were the trends in cryptocurrency investments in South Korea following '
+ 'the 2023 League of Legends World Championship win?',
+ 'Did the influx of funds into the South Korean cryptocurrency market show any '
+ 'specific patterns after the victory in the 2023 League of Legends World '
+ 'Championship?',
+ 'Are there any similarities between the cryptocurrency industry and the world '
+ 'of esports in South Korea?',
+ "Did South Korea's success in the 2023 League of Legends World Championship "
+ 'influence the adoption of blockchain technology?',
+ 'How did South Korean investors react to the victory in terms of '
+ 'cryptocurrency trading?',
+ 'Were there any notable cryptocurrency projects or initiatives launched in '
+ 'South Korea after the 2023 League of Legends World Championship win?',
+ 'Did the victory in the esports industry affect the perception of '
+ 'cryptocurrencies in South Korea?',
+ 'Were there any crypto-related sponsorship deals or partnerships related to '
+ 'the 2023 League of Legends World Championship?',
+ 'How did South Korean esports organizations leverage cryptocurrencies and '
+ 'blockchain technology?',
+ 'Did the winning esports team or players receive cryptocurrency rewards or '
+ 'endorsements?',
+ 'Were there any specific cryptocurrencies or tokens associated with the 2023 '
+ 'League of Legends World Championship in South Korea?',
+ 'Did the event lead to discussions about creating a dedicated esports '
+ 'cryptocurrency or token?',
+ 'How did South Korean regulators react to the intersection of esports and '
+ 'cryptocurrencies after the championship win?',
+ "Did South Korea's esports industry explore blockchain-based voting or "
+ 'governance systems?',
+ 'Were there any esports-related NFT (Non-Fungible Token) projects in South '
+ 'Korea following the championship?',
+ 'Did the victory lead to increased blockchain gaming development in South '
+ 'Korea?',
+ 'Were there any changes in cryptocurrency exchange regulations in South Korea '
+ 'post-2023 League of Legends World Championship?',
+ 'Did the event affect the adoption of decentralized finance (DeFi) in South '
+ 'Korea?',
+ 'Were there any esports-themed cryptocurrency events or conferences in South '
+ 'Korea?',
+ 'Did the victory result in a surge in trading volumes for esports-related '
+ 'tokens in South Korea?',
+ 'How did the South Korean government respond to the potential synergies '
+ 'between esports and cryptocurrency?',
+ 'Were there any partnerships between esports teams and cryptocurrency '
+ 'projects in South Korea?',
+ 'Did the victory lead to an increase in cryptocurrency education and '
+ 'awareness campaigns in South Korea?',
+ "How did South Korea's victory influence the sentiment of South Korean "
+ 'cryptocurrency enthusiasts?',
+ 'Were there any blockchain-based solutions introduced for esports tournament '
+ 'management in South Korea?',
+ 'Did the event trigger discussions about tokenizing esports assets in South '
+ 'Korea?',
+ 'How did the South Korean esports community react to the integration of '
+ 'cryptocurrencies?',
+ 'Were there any initiatives to reward esports fans with cryptocurrencies in '
+ 'South Korea?',
+ 'How did esports players and teams manage their earnings from cryptocurrency '
+ 'sponsorships?',
+ 'Were there any cryptocurrency endorsements or collaborations involving South '
+ 'Korean esports players?',
+ 'Did South Korean universities offer blockchain and cryptocurrency-related '
+ 'courses following the championship?',
+ 'How did South Korean esports organizations leverage blockchain for fan '
+ 'engagement?',
+ 'Were there any esports-related blockchain games or platforms introduced in '
+ 'South Korea?',
+ 'How did South Korean cryptocurrency exchanges promote esports-related '
+ 'tokens?',
+ "Were there any NFT collectibles associated with South Korea's victory at the "
+ '2023 League of Legends World Championship?',
+ 'Did the event lead to an increase in blockchain-based ticketing solutions '
+ 'for esports events in South Korea?',
+ 'How did South Korean esports teams use blockchain technology for talent '
+ 'scouting and management?',
+ 'Were there any esports-specific cryptocurrency wallets or payment solutions '
+ 'introduced in South Korea?',
+ 'How did the victory impact the overall esports and blockchain ecosystem in '
+ 'South Korea?',
+ 'Were there any cryptocurrency-focused hackathons or innovation competitions '
+ 'related to esports in South Korea?',
+ 'How did the event affect the tokenization of esports content in South Korea?',
+ 'Were there any blockchain-based platforms for esports betting introduced in '
+ 'South Korea?',
+ 'How did South Korean esports players and teams handle cryptocurrency '
+ 'taxation issues?']
 
 REFERRAL_LINKS = [
     "https://qna3.ai/?code=kpKpcujE", #0~19번
@@ -305,7 +353,7 @@ else:
             log_out()
             log_in()
             confirm_network_and_sign()
-            send_qna()
+            #send_qna()
             #vote(0)
             #vote(1)
             #vote(2)
