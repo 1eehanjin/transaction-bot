@@ -48,8 +48,8 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 56
-END_ACCOUNT_NUM = 200
+START_ACCOUNT_NUM = 4
+END_ACCOUNT_NUM = 20
 
 QUESTIONS = ["How did South Korea's victory at the 2023 League of Legends World "
  'Championship impact the cryptocurrency market?',
@@ -166,6 +166,7 @@ def metamask_login():
 def switch_metamask_account(account_number):
     #계정 전환
     driver.switch_to.window(all_tabs[0])
+    driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
     time.sleep(SHORT_WAIT_TIME)
     account_change_button = driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button')
     if account_change_button.text == f'계정 {account_number}':
@@ -188,19 +189,11 @@ def log_out():
         driver.find_element("class name", 'hidden.overflow-hidden.text-ellipsis.font-medium.text-white.md\\:block').click()
         time.sleep(SHORT_WAIT_TIME)
         driver.find_element("xpath", "//*[contains(text(),'Sign Out')]").click()
-        time.sleep(LONG_WAIT_TIME)
+        time.sleep(SHORT_WAIT_TIME)
     except:
-        print("이미 로그아웃 되어있습니다.")
-
-    
-    
+        print("이미 로그아웃 되어있습니다.")    
 
 def log_in():
-    # login_button = driver.find_element("xpath", "//*[contains(text(),'Sign In')]")
-    # login_button.click()
-    # time.sleep(SHORT_WAIT_TIME)
-    # driver.find_element("xpath", '/html/body/div[5]/div/div/div/div/div[2]/div/button').click()
-    # time.sleep(SHORT_WAIT_TIME)
     driver.find_element("xpath",  '//*[@id="root"]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div[3]/div/div[1]/div/button').click()
     time.sleep(SHORT_WAIT_TIME)
     try:
@@ -293,11 +286,13 @@ def send_qna():
      time.sleep(LONG_WAIT_TIME)
      count = 0
      while True:
-        if count > 5:
-            count = 0
+        if count == 2:
             driver.refresh()
             time.sleep(LONG_WAIT_TIME)
-            confirm_network_and_sign()
+        if count == 4:
+            driver.get(referral_link)
+            time.sleep(LONG_WAIT_TIME)
+            return False
         try:
             good_button_container = driver.find_element("class name", 'flex.justify-end.gap-4')
             break
@@ -305,15 +300,13 @@ def send_qna():
             print("아직 질문에 대한 답변이 생성되지 않았습니다..")
             count +=1
             time.sleep(LONG_WAIT_TIME)
-            
-
      good_button = good_button_container.find_element("xpath", "./button")
      good_button.click()
      time.sleep(SHORT_WAIT_TIME)
      print("qna 및 따봉 완료")
-     driver.get(referrel_link)
+     driver.get(referral_link)
      time.sleep(LONG_WAIT_TIME)
-     confirm_network_and_sign()
+     return True
 
 def vote(number):
     vote_buttons = driver.find_elements("xpath", "//*[text()='Vote']")
@@ -344,16 +337,17 @@ if IS_SETTING_MODE:
 else:
     metamask_login()
     for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
-        switch_metamask_account(i)
-        referrel_link = REFERRAL_LINKS[i//20]
-        driver.get(referrel_link)
-        time.sleep(LONG_WAIT_TIME)
-        print(f"{i}번 레퍼럴링크:  {referrel_link}")
         try:
+            switch_metamask_account(i)
+            referral_link = REFERRAL_LINKS[i//20]
+            driver.get(referral_link)
+            time.sleep(LONG_WAIT_TIME)
+            print(f"{i}번 레퍼럴링크:  {referral_link}")
             log_out()
             log_in()
             confirm_network_and_sign()
-            #send_qna()
+            while send_qna() != True:
+                print("답변을 생성하지 못해 재질문합니다 ... ")
             #vote(0)
             #vote(1)
             #vote(2)
@@ -362,7 +356,7 @@ else:
             print(f">>{i}번 완료")
         except Exception as e:
             print(f"!!{i}번 진행중 오류가 발생했습니다\n{e}")
-            message_sender.send_telegram_message(f"!!qna3 {i}번계정 진행중 오류가 발생했습니다\n{e}")
+            message_sender.send_telegram_message(f"!!qna3 {i}번계정 진행중 오류가 발생했습니다")
         finally:
             driver.switch_to.window(all_tabs[1])
     print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
