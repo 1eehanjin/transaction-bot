@@ -48,8 +48,8 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 4
-END_ACCOUNT_NUM = 20
+START_ACCOUNT_NUM = 2
+END_ACCOUNT_NUM = 200
 
 QUESTIONS = ["How did South Korea's victory at the 2023 League of Legends World "
  'Championship impact the cryptocurrency market?',
@@ -290,6 +290,8 @@ def send_qna():
             driver.refresh()
             time.sleep(LONG_WAIT_TIME)
         if count == 4:
+            driver.delete_all_cookies()
+            time.sleep(LONG_WAIT_TIME)
             driver.get(referral_link)
             time.sleep(LONG_WAIT_TIME)
             return False
@@ -338,7 +340,9 @@ else:
     metamask_login()
     for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
         try:
+            confirm_network_and_sign()
             switch_metamask_account(i)
+            confirm_network_and_sign()
             referral_link = REFERRAL_LINKS[i//20]
             driver.get(referral_link)
             time.sleep(LONG_WAIT_TIME)
@@ -357,6 +361,21 @@ else:
         except Exception as e:
             print(f"!!{i}번 진행중 오류가 발생했습니다\n{e}")
             message_sender.send_telegram_message(f"!!qna3 {i}번계정 진행중 오류가 발생했습니다")
+            driver.delete_all_cookies()
+            confirm_network_and_sign()
+            confirm_transaction()
+            i = i - 1
+            driver.quit()
+            options = Options()
+            options.add_argument(f"user-data-dir={user_data_dir}")
+            options.add_argument(f"--profile-directory=profile 1")
+            options.add_experimental_option("detach", True)  # 화면이 꺼지지 않고 유지
+            service = Service(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=service, options=options)
+            driver.execute_script("window.open('about:blank', '_blank');")
+            all_tabs = driver.window_handles
+            time.sleep(SHORT_WAIT_TIME)
+            metamask_login()
         finally:
             driver.switch_to.window(all_tabs[1])
     print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
