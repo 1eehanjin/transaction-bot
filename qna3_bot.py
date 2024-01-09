@@ -48,7 +48,7 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 2
+START_ACCOUNT_NUM = 65
 END_ACCOUNT_NUM = 200
 
 QUESTIONS = ['What is the connection between cryptocurrency and the city of Chungju?',
@@ -192,7 +192,7 @@ class ChromeController:
         time.sleep(SHORT_WAIT_TIME)
         self.confirm_network_and_sign_and_transaction()
         self.driver.switch_to.window(self.all_tabs[0])
-        account_change_button = self.driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button111')
+        account_change_button = self.driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button')
         if account_change_button.text == f'계정 {account_number}':
             print(f"** 이미 메타마스크 계정 {account_number}입니다.")
         else:
