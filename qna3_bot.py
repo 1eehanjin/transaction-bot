@@ -155,229 +155,224 @@ REFERRAL_LINKS = [
     "https://qna3.ai/?code=3a5wgqZc"
 ]
 
-def metamask_login():
-    driver.switch_to.window(all_tabs[0])
-    driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
-    time.sleep(SHORT_WAIT_TIME)
-    driver.find_element('xpath', '/html/body/div[1]/div/div[2]/div/div/form/div/div/input').send_keys(metamask_password)
-    driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/div/button').click()
-    time.sleep(SHORT_WAIT_TIME)
+class ChromeController:
 
-def switch_metamask_account(account_number):
-    #계정 전환
-    driver.switch_to.window(all_tabs[0])
-    driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
-    time.sleep(SHORT_WAIT_TIME)
-    account_change_button = driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button')
-    if account_change_button.text == f'계정 {account_number}':
-        print(f"** 이미 메타마스크 계정 {account_number}입니다.")
-    else:
-        account_change_button.click()
+    def open_browser(self):
+        options = Options()
+        options.add_argument(f"user-data-dir={user_data_dir}")
+        options.add_argument(f"--profile-directory=profile 1")
+        options.add_experimental_option("detach", True)  # 화면이 꺼지지 않고 유지
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=options)
+        self.driver.execute_script("window.open('about:blank', '_blank');")
+        self.all_tabs = self.driver.window_handles
         time.sleep(SHORT_WAIT_TIME)
-        driver.find_element("xpath", f"//*[text()='계정 {account_number}']").click()
+
+    def work(self):
+        self.metamask_login()
+        for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
+            self.perform_task(i)
+        print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
+
+    def metamask_login(self):
+        self.driver.switch_to.window(self.all_tabs[0])
+        self.driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
         time.sleep(SHORT_WAIT_TIME)
-        print(f"** 메타마스크 계정 {account_number}으로 전환되었습니다.")
-    driver.switch_to.window(all_tabs[1])
-
-def print_page_html():
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    print(soup.text)
-
-def log_out():
-    try:
-        driver.find_element("class name", 'hidden.overflow-hidden.text-ellipsis.font-medium.text-white.md\\:block').click()
+        self.driver.find_element('xpath', '/html/body/div[1]/div/div[2]/div/div/form/div/div/input').send_keys(metamask_password)
+        self.driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/div/button').click()
         time.sleep(SHORT_WAIT_TIME)
-        driver.find_element("xpath", "//*[contains(text(),'Sign Out')]").click()
+
+    def perform_task(self, account_number):
+        while True:
+            try:
+                self.perform_normal_task(account_number=account_number)
+                break
+            except Exception as e:
+                print(1)
+                self.perform_error_task(account_number=account_number)
+
+    def perform_normal_task(self, account_number):
+        self.switch_metamask_account(account_number)
+        self.referral_link = REFERRAL_LINKS[account_number//20]
+        self.driver.get(self.referral_link)
+        time.sleep(LONG_WAIT_TIME)
+        self.log_out()
+        self.log_in()
+        while self.send_qna() != True:
+            print("답변을 생성하지 못해 재질문합니다 ... ")
+        self.vote(0)
+        #self.vote(1)
+        #self.vote(2)
+        self.switch_to_opbnb()
+        self.check_in()
+        print(f">>{account_number}번 완료")
+
+    def perform_error_task(self, account_number):
+        print(f"!!{account_number}번 진행중 오류가 발생했습니다\n")
+        message_sender.send_telegram_message(f"!!qna3 {account_number}번계정 진행중 오류가 발생했습니다")
+        self.driver.delete_all_cookies()
+        self.driver.quit()
+        self.open_browser()
+        self.metamask_login()
+
+    def switch_metamask_account(self, account_number):
+        self.driver.switch_to.window(self.all_tabs[0])
+        self.driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
         time.sleep(SHORT_WAIT_TIME)
-    except:
-        print("이미 로그아웃 되어있습니다.")    
-
-def log_in():
-    driver.find_element("xpath",  '//*[@id="root"]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div[3]/div/div[1]/div/button').click()
-    time.sleep(SHORT_WAIT_TIME)
-    try:
-        driver.find_element("xpath", '/html/body/div[16]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button/div/div').click()
-    except:
-         print("지갑선택창 스킵됨")
-    print("로그인 완료")
-
-def confirm_network_and_sign():
-    driver.switch_to.window(all_tabs[0])
-    time.sleep(SHORT_WAIT_TIME)
-    while True:
-        driver.refresh()
-        time.sleep(SHORT_WAIT_TIME)
-        if not confirm_network() and not confirm_sign():
-             break
-    driver.switch_to.window(all_tabs[1])
-    print("메타마스크 네트워크 전환, 서명 요청 제거 완료")
-    time.sleep(SHORT_WAIT_TIME)
-    
-
-def confirm_network():
-    try:
-        driver.find_element("xpath", "//button[contains(text(),'네트워크 전환')]").click()
-        time.sleep(SHORT_WAIT_TIME)
-        return True
-    except:
-        return False
-
-def confirm_sign():
-    try:
-        driver.find_element("xpath", "//button[contains(text(),'서명')]").click()
-        time.sleep(SHORT_WAIT_TIME)
-        return True
-    except:
-        return False
-
-
-def confirm_transaction():
-    driver.switch_to.window(all_tabs[0])
-    time.sleep(SHORT_WAIT_TIME)
-    driver.refresh()
-    time.sleep(SHORT_WAIT_TIME)
-    for i in range(5):
-        try:
-            driver.find_element("xpath", "//button[contains(text(),'컨펌')]").click()
-            break
-        except:
-            print("트랜잭션 버튼 활성화 대기중...")  
+        self.confirm_network_and_sign_and_transaction()
+        self.driver.switch_to.window(self.all_tabs[0])
+        account_change_button = self.driver.find_element("xpath", '//*[@id="app-content"]/div/div[2]/div/button111')
+        if account_change_button.text == f'계정 {account_number}':
+            print(f"** 이미 메타마스크 계정 {account_number}입니다.")
+        else:
+            account_change_button.click()
             time.sleep(SHORT_WAIT_TIME)
-    if i == 4:
-        print("트랜잭션 버튼을 찾지 못했습니다...원래 화면으로 되돌아갑니다.")
-    else:
-        print("트랜잭션 전송 성공")
-    time.sleep(SHORT_WAIT_TIME)
-    driver.switch_to.window(all_tabs[1])
-    time.sleep(SHORT_WAIT_TIME)
-    
+            self.driver.find_element("xpath", f"//*[text()='계정 {account_number}']").click()
+            time.sleep(SHORT_WAIT_TIME)
+            print(f"** 메타마스크 계정 {account_number}으로 전환되었습니다.")
+        self.driver.switch_to.window(self.all_tabs[1])
 
-def check_in():
-    try:
-        check_in_button = driver.find_element("xpath", "//button[contains(text(),'Click To Check-in')]")
-    except:
-         print("이미 출석되어있습니다")
-         return
-    check_in_button.click()
-    time.sleep(SHORT_WAIT_TIME)
-    #confirm_network_and_sign()
-    confirm_transaction()
-    time.sleep(LONG_WAIT_TIME)
-    print("출석 완료")
-
-def switch_to_opbnb():
-    chain_button = driver.find_element("xpath", "/html/body/div[1]/div[1]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]")
-    if not chain_button.text.find("opBNB"):
-            print("이미 opBNB체인입니다")
-            return
-    chain_button.click()
-    time.sleep(SHORT_WAIT_TIME)
-    confirm_network_and_sign()
-    driver.switch_to.window(all_tabs[1])
-    time.sleep(SHORT_WAIT_TIME)
-    print("출석체크 위해 opBNB 네트워크로 전환 완료")
-
-def send_qna():
-     question = random.choice(QUESTIONS)
-     textarea= driver.find_element("xpath", '//*[@id="root"]/div[1]/div/div[2]/div/div[1]/div[1]/div/div[1]/textarea')
-     textarea.send_keys(question)
-     textarea.send_keys(Keys.ENTER)
-     time.sleep(LONG_WAIT_TIME)
-     count = 0
-     while True:
-        if count == 2:
-            driver.refresh()
-            time.sleep(LONG_WAIT_TIME)
-        if count == 4:
-            driver.delete_all_cookies()
-            time.sleep(LONG_WAIT_TIME)
-            driver.get(referral_link)
-            time.sleep(LONG_WAIT_TIME)
-            return False
+    def log_out(self):
         try:
-            good_button_container = driver.find_element("class name", 'flex.justify-end.gap-4')
-            break
+            self.driver.find_element("class name", 'hidden.overflow-hidden.text-ellipsis.font-medium.text-white.md\\:block').click()
+            time.sleep(SHORT_WAIT_TIME)
+            self.driver.find_element("xpath", "//*[contains(text(),'Sign Out')]").click()
+            time.sleep(SHORT_WAIT_TIME)
         except:
-            print("아직 질문에 대한 답변이 생성되지 않았습니다..")
-            count +=1
-            time.sleep(LONG_WAIT_TIME)
-     good_button = good_button_container.find_element("xpath", "./button")
-     good_button.click()
-     time.sleep(SHORT_WAIT_TIME)
-     print("qna 및 따봉 완료")
-     driver.get(referral_link)
-     time.sleep(LONG_WAIT_TIME)
-     return True
+            print("이미 로그아웃 되어있습니다.")    
 
-def vote(number):
-    vote_buttons = driver.find_elements("xpath", "//*[text()='Vote']")
-    vote_buttons[number].click()
-    time.sleep(SHORT_WAIT_TIME)
-    confirm_transaction()
-    print(f"{number}번 보팅 완료") 
-    time.sleep(LONG_WAIT_TIME)
+    def log_in(self):
+        self.driver.find_element("xpath",  '//*[@id="root"]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div[3]/div/div[1]/div/button').click()
+        time.sleep(SHORT_WAIT_TIME)
+        try:
+            self.driver.find_element("xpath", '/html/body/div[16]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button/div/div').click()
+        except:
+            print("지갑선택창 스킵됨")
+        self.confirm_network_and_sign_and_transaction()
+        print("로그인 완료")
+
+    def confirm_network_and_sign_and_transaction(self):
+        self.driver.switch_to.window(self.all_tabs[0])
+        time.sleep(SHORT_WAIT_TIME)
+        while True:
+            self.driver.refresh()
+            time.sleep(SHORT_WAIT_TIME)
+            if not self.confirm_network() and not self.confirm_sign() and not self.confirm_transaction():
+                break            
+        self.driver.switch_to.window(self.all_tabs[1])
+        print("메타마스크 네트워크 전환, 서명 요청, 트랜잭션 요청 제거 완료")
+        time.sleep(SHORT_WAIT_TIME)
+        
+    def confirm_network(self):
+        try:
+            self.driver.find_element("xpath", "//button[contains(text(),'네트워크 전환')]").click()
+            time.sleep(SHORT_WAIT_TIME)
+            return True
+        except:
+            return False
+
+    def confirm_sign(self):
+        try:
+            self.driver.find_element("xpath", "//button[contains(text(),'서명')]").click()
+            time.sleep(SHORT_WAIT_TIME)
+            return True
+        except:
+            return False
+
+
+    def confirm_transaction(self):
+        try:
+            confirm_button = self.driver.find_element("xpath", "//button[contains(text(),'컨펌')]")
+            time.sleep(SHORT_WAIT_TIME)
+            print("트랜잭션 버튼 발견")
+        except:
+            return False
+        for i in range(10):
+            try:
+                confirm_button.click()
+                break
+            except:
+                print("트랜잭션 버튼 활성화 대기중...")  
+                time.sleep(SHORT_WAIT_TIME)
+        self.driver.switch_to.window(self.all_tabs[1])
+        return True
+
+    def check_in(self):
+        try:
+            check_in_button = self.driver.find_element("xpath", "//button[contains(text(),'Click To Check-in')]")
+        except:
+            print("이미 출석되어있습니다")
+            return
+        check_in_button.click()
+        time.sleep(SHORT_WAIT_TIME)
+        self.confirm_network_and_sign_and_transaction()
+        time.sleep(SHORT_WAIT_TIME)
+        print("출석 완료")
+
+    def switch_to_opbnb(self):
+        chain_button = self.driver.find_element("xpath", "/html/body/div[1]/div[1]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]")
+        if not chain_button.text.find("opBNB"):
+                print("이미 opBNB체인입니다")
+                return
+        chain_button.click()
+        time.sleep(SHORT_WAIT_TIME)
+        self.confirm_network_and_sign_and_transaction()
+        time.sleep(SHORT_WAIT_TIME)
+        print("출석체크 위해 opBNB 네트워크로 전환 완료")
+
+    def send_qna(self):
+        question = random.choice(QUESTIONS)
+        textarea= self.driver.find_element("xpath", '//*[@id="root"]/div[1]/div/div[2]/div/div[1]/div[1]/div/div[1]/textarea')
+        textarea.send_keys(question)
+        textarea.send_keys(Keys.ENTER)
+        time.sleep(LONG_WAIT_TIME)
+        count = 0
+        while True:
+            if count == 2:
+                self.driver.refresh()
+                time.sleep(LONG_WAIT_TIME)
+            if count == 4:
+                self.driver.delete_all_cookies()
+                time.sleep(LONG_WAIT_TIME)
+                self.driver.get(self.referral_link)
+                time.sleep(LONG_WAIT_TIME)
+                return False
+            try:
+                good_button_container = self.driver.find_element("class name", 'flex.justify-end.gap-4')
+                break
+            except:
+                print("아직 질문에 대한 답변이 생성되지 않았습니다..")
+                count +=1
+                time.sleep(LONG_WAIT_TIME)
+        good_button = good_button_container.find_element("xpath", "./button")
+        good_button.click()
+        time.sleep(SHORT_WAIT_TIME)
+        print("qna 및 따봉 완료")
+        self.driver.get(self.referral_link)
+        time.sleep(LONG_WAIT_TIME)
+        return True
+
+    def vote(self, number):
+        vote_buttons = self.driver.find_elements("xpath", "//*[text()='Vote']")
+        vote_buttons[number].click()
+        time.sleep(SHORT_WAIT_TIME)
+        self.confirm_network_and_sign_and_transaction()
+        print(f"{number}번 보팅 완료") 
+        time.sleep(LONG_WAIT_TIME)
      
 
-
-with open('./secrets.json') as f:
-            secret_data = json.load(f)
-            metamask_password = secret_data["metamask_password"]
-            user_data_dir = secret_data["user_data_dir"]
-options = Options()
-options.add_argument(f"user-data-dir={user_data_dir}")
-options.add_argument(f"--profile-directory=profile 1")
-options.add_experimental_option("detach", True)  # 화면이 꺼지지 않고 유지
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
-driver.execute_script("window.open('about:blank', '_blank');")
-all_tabs = driver.window_handles
-time.sleep(SHORT_WAIT_TIME)
-
-if IS_SETTING_MODE:
-    print("설정을 위해 봇을 실행하지 않습니다.")
-else:
-    metamask_login()
-    for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
-        try:
-            confirm_network_and_sign()
-            switch_metamask_account(i)
-            confirm_network_and_sign()
-            referral_link = REFERRAL_LINKS[i//20]
-            driver.get(referral_link)
-            time.sleep(LONG_WAIT_TIME)
-            print(f"{i}번 레퍼럴링크:  {referral_link}")
-            log_out()
-            log_in()
-            confirm_network_and_sign()
-            while send_qna() != True:
-                print("답변을 생성하지 못해 재질문합니다 ... ")
-            #vote(0)
-            #vote(1)
-            #vote(2)
-            switch_to_opbnb()
-            check_in()
-            print(f">>{i}번 완료")
-        except Exception as e:
-            print(f"!!{i}번 진행중 오류가 발생했습니다\n{e}")
-            message_sender.send_telegram_message(f"!!qna3 {i}번계정 진행중 오류가 발생했습니다")
-            driver.delete_all_cookies()
-            confirm_network_and_sign()
-            confirm_transaction()
-            i = i - 1
-            driver.quit()
-            options = Options()
-            options.add_argument(f"user-data-dir={user_data_dir}")
-            options.add_argument(f"--profile-directory=profile 1")
-            options.add_experimental_option("detach", True)  # 화면이 꺼지지 않고 유지
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=options)
-            driver.execute_script("window.open('about:blank', '_blank');")
-            all_tabs = driver.window_handles
-            time.sleep(SHORT_WAIT_TIME)
-            metamask_login()
-        finally:
-            driver.switch_to.window(all_tabs[1])
-    print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
-
+try:
+    with open('./secrets.json') as f:
+                secret_data = json.load(f)
+                metamask_password = secret_data["metamask_password"]
+                user_data_dir = secret_data["user_data_dir"]
+    chrome_controller = ChromeController()
+    chrome_controller.open_browser()
+    if IS_SETTING_MODE:
+        print("설정을 위해 봇을 실행하지 않습니다.")
+    else:
+        chrome_controller.work()
+except Exception as e:
+    print(e)
+    message_sender.send_telegram_message("qna봇 재실행 필요한 오류 발생")
 
