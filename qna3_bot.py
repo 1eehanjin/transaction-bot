@@ -51,96 +51,67 @@ LONG_WAIT_TIME = 10
 START_ACCOUNT_NUM = 2
 END_ACCOUNT_NUM = 200
 
-QUESTIONS = ["How did South Korea's victory at the 2023 League of Legends World "
- 'Championship impact the cryptocurrency market?',
- "Did South Korea's victory in the League of Legends World Championship lead "
- 'to increased interest in cryptocurrencies?',
- 'What were the trends in cryptocurrency investments in South Korea following '
- 'the 2023 League of Legends World Championship win?',
- 'Did the influx of funds into the South Korean cryptocurrency market show any '
- 'specific patterns after the victory in the 2023 League of Legends World '
- 'Championship?',
- 'Are there any similarities between the cryptocurrency industry and the world '
- 'of esports in South Korea?',
- "Did South Korea's success in the 2023 League of Legends World Championship "
- 'influence the adoption of blockchain technology?',
- 'How did South Korean investors react to the victory in terms of '
- 'cryptocurrency trading?',
- 'Were there any notable cryptocurrency projects or initiatives launched in '
- 'South Korea after the 2023 League of Legends World Championship win?',
- 'Did the victory in the esports industry affect the perception of '
- 'cryptocurrencies in South Korea?',
- 'Were there any crypto-related sponsorship deals or partnerships related to '
- 'the 2023 League of Legends World Championship?',
- 'How did South Korean esports organizations leverage cryptocurrencies and '
- 'blockchain technology?',
- 'Did the winning esports team or players receive cryptocurrency rewards or '
- 'endorsements?',
- 'Were there any specific cryptocurrencies or tokens associated with the 2023 '
- 'League of Legends World Championship in South Korea?',
- 'Did the event lead to discussions about creating a dedicated esports '
- 'cryptocurrency or token?',
- 'How did South Korean regulators react to the intersection of esports and '
- 'cryptocurrencies after the championship win?',
- "Did South Korea's esports industry explore blockchain-based voting or "
- 'governance systems?',
- 'Were there any esports-related NFT (Non-Fungible Token) projects in South '
- 'Korea following the championship?',
- 'Did the victory lead to increased blockchain gaming development in South '
- 'Korea?',
- 'Were there any changes in cryptocurrency exchange regulations in South Korea '
- 'post-2023 League of Legends World Championship?',
- 'Did the event affect the adoption of decentralized finance (DeFi) in South '
- 'Korea?',
- 'Were there any esports-themed cryptocurrency events or conferences in South '
- 'Korea?',
- 'Did the victory result in a surge in trading volumes for esports-related '
- 'tokens in South Korea?',
- 'How did the South Korean government respond to the potential synergies '
- 'between esports and cryptocurrency?',
- 'Were there any partnerships between esports teams and cryptocurrency '
- 'projects in South Korea?',
- 'Did the victory lead to an increase in cryptocurrency education and '
- 'awareness campaigns in South Korea?',
- "How did South Korea's victory influence the sentiment of South Korean "
- 'cryptocurrency enthusiasts?',
- 'Were there any blockchain-based solutions introduced for esports tournament '
- 'management in South Korea?',
- 'Did the event trigger discussions about tokenizing esports assets in South '
- 'Korea?',
- 'How did the South Korean esports community react to the integration of '
- 'cryptocurrencies?',
- 'Were there any initiatives to reward esports fans with cryptocurrencies in '
- 'South Korea?',
- 'How did esports players and teams manage their earnings from cryptocurrency '
- 'sponsorships?',
- 'Were there any cryptocurrency endorsements or collaborations involving South '
- 'Korean esports players?',
- 'Did South Korean universities offer blockchain and cryptocurrency-related '
- 'courses following the championship?',
- 'How did South Korean esports organizations leverage blockchain for fan '
- 'engagement?',
- 'Were there any esports-related blockchain games or platforms introduced in '
- 'South Korea?',
- 'How did South Korean cryptocurrency exchanges promote esports-related '
- 'tokens?',
- "Were there any NFT collectibles associated with South Korea's victory at the "
- '2023 League of Legends World Championship?',
- 'Did the event lead to an increase in blockchain-based ticketing solutions '
- 'for esports events in South Korea?',
- 'How did South Korean esports teams use blockchain technology for talent '
- 'scouting and management?',
- 'Were there any esports-specific cryptocurrency wallets or payment solutions '
- 'introduced in South Korea?',
- 'How did the victory impact the overall esports and blockchain ecosystem in '
- 'South Korea?',
- 'Were there any cryptocurrency-focused hackathons or innovation competitions '
- 'related to esports in South Korea?',
- 'How did the event affect the tokenization of esports content in South Korea?',
- 'Were there any blockchain-based platforms for esports betting introduced in '
- 'South Korea?',
- 'How did South Korean esports players and teams handle cryptocurrency '
- 'taxation issues?']
+QUESTIONS = ['What is the connection between cryptocurrency and the city of Chungju?',
+ 'Are there any cryptocurrency businesses or exchanges operating in Chungju?',
+ 'How does Chungju City view the adoption of cryptocurrencies?',
+ "Can you explain the impact of cryptocurrency on Chungju's economy?",
+ 'Are there any cryptocurrency-related events or conferences held in Chungju?',
+ 'What cryptocurrency regulations are in place in Chungju?',
+ 'Are there any blockchain startups based in Chungju?',
+ 'How are cryptocurrency transactions taxed in Chungju?',
+ 'Does Chungju City promote blockchain technology development?',
+ 'Are there any cryptocurrency mining activities in Chungju?',
+ 'Have there been any cryptocurrency-related scams reported in Chungju?',
+ 'How does the local government of Chungju support blockchain innovation?',
+ 'Are there any cryptocurrency ATMs in Chungju?',
+ 'What is the level of cryptocurrency adoption among Chungju residents?',
+ 'Are there any educational programs on cryptocurrency and blockchain in '
+ 'Chungju?',
+ 'How does Chungju City regulate Initial Coin Offerings (ICOs)?',
+ 'Are there any cryptocurrency meetups or communities in Chungju?',
+ 'Does Chungju have any plans to issue its own cryptocurrency?',
+ 'How does Chungju City ensure the security of cryptocurrency users?',
+ 'What is the stance of Chungju City on decentralized finance (DeFi)?',
+ 'Are there any notable cryptocurrency investors or companies headquartered in '
+ 'Chungju?',
+ 'How does Chungju City address the environmental concerns of cryptocurrency '
+ 'mining?',
+ 'What are the potential benefits of cryptocurrency for businesses in Chungju?',
+ 'Are there any cryptocurrency-related research institutions in Chungju?',
+ 'How does Chungju City promote blockchain-based solutions for public '
+ 'services?',
+ 'What are the challenges faced by cryptocurrency businesses in Chungju?',
+ 'Does Chungju City collaborate with blockchain projects for urban '
+ 'development?',
+ 'How does Chungju City ensure the legality of cryptocurrency transactions?',
+ 'Are there any cryptocurrency trading restrictions for residents of Chungju?',
+ 'Does Chungju City plan to integrate blockchain technology into its '
+ 'administrative processes?',
+ 'Are there any regulations on cryptocurrency advertising in Chungju?',
+ 'How does Chungju City protect consumers from cryptocurrency fraud?',
+ 'Are there any partnerships between Chungju City and blockchain companies?',
+ 'Does Chungju have a strategy for attracting cryptocurrency investment?',
+ "What is the role of blockchain in Chungju's smart city initiatives?",
+ 'How does Chungju City address the energy consumption concerns of '
+ 'cryptocurrency mining?',
+ 'Are there any cryptocurrency-related job opportunities in Chungju?',
+ 'How does Chungju City educate its residents about cryptocurrency risks?',
+ 'Does Chungju City have a blockchain-based voting system?',
+ 'How does Chungju City handle cryptocurrency donations for charitable '
+ 'purposes?',
+ 'Are there any local businesses in Chungju that accept cryptocurrency '
+ 'payments?',
+ 'How does Chungju City balance the innovation potential of cryptocurrency '
+ 'with regulatory concerns?',
+ 'Are there any government grants or incentives for cryptocurrency startups in '
+ 'Chungju?',
+ 'How does Chungju City collaborate with universities on blockchain research?',
+ "What is the role of cryptocurrency in Chungju's tourism industry?",
+ 'Are there any cryptocurrency trading competitions or events in Chungju?',
+ 'How does Chungju City approach the issue of cryptocurrency price volatility?',
+ 'Are there any cryptocurrency-related art or cultural events in Chungju?',
+ 'What is the role of blockchain in land and property records in Chungju?',
+ 'How does Chungju City engage with the global cryptocurrency community?']
 
 REFERRAL_LINKS = [
     "https://qna3.ai/?code=kpKpcujE", #0~19번
