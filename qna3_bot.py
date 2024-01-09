@@ -277,7 +277,7 @@ class ChromeController:
         check_in_button.click()
         time.sleep(SHORT_WAIT_TIME)
         self.confirm_network_and_sign_and_transaction()
-        time.sleep(SHORT_WAIT_TIME)
+        time.sleep(LONG_WAIT_TIME)
         print("출석 완료")
 
     def switch_to_opbnb(self):
