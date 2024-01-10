@@ -48,71 +48,70 @@ IS_SETTING_MODE = False
 SHORT_WAIT_TIME = 2
 LONG_WAIT_TIME = 10
 
-START_ACCOUNT_NUM = 14
+START_ACCOUNT_NUM = 2
 END_ACCOUNT_NUM = 200
 
-QUESTIONS = ['What is AI coin and how does it work?',
- 'Can you explain the technology behind AI coins?',
- 'What are the advantages of investing in AI coins?',
- 'Are AI coins considered a good investment in the cryptocurrency market?',
- 'How do AI coins leverage artificial intelligence in their operations?',
- 'What are the potential use cases for AI coins?',
- 'How does AI contribute to the security of AI coins?',
- 'Are there any AI-powered features in AI coin wallets?',
- 'How does AI enhance the scalability of AI coins?',
- 'What distinguishes AI coins from traditional cryptocurrencies like Bitcoin?',
- 'How are AI coins mined or generated?',
- 'Can AI coins be used for smart contracts and decentralized applications '
- '(DApps)?',
- 'What role does machine learning play in the development of AI coins?',
- 'Are there any AI-driven predictive analytics tools for AI coin investors?',
- 'How do AI coins address privacy and data security concerns?',
- 'Are AI coins built on a specific blockchain platform, or do they have their '
- 'own blockchain?',
- 'What are the key partnerships and collaborations involving AI coin projects?',
- 'How does AI coin technology adapt to changing market conditions?',
- 'Are there any AI coin projects focused on solving real-world problems?',
- 'What are the potential risks associated with investing in AI coins?',
- 'How do AI coins use natural language processing (NLP) and sentiment '
- 'analysis?',
- 'What are the most prominent AI coin projects in the market today?',
- 'Can AI coins be used for data monetization and data marketplaces?',
- 'How does AI coin technology address the issue of energy consumption in '
- 'blockchain?',
- 'Are there AI coin projects that incorporate computer vision and image '
- 'recognition?',
- 'What is the role of AI in preventing fraud and improving security for AI '
- 'coins?',
- 'How do AI coins leverage deep learning algorithms for decision-making?',
- 'What is the consensus mechanism used by AI coins?',
- 'Are AI coins compliant with regulatory requirements and data protection '
- 'laws?',
- 'How do AI coins handle tokenomics, supply, and distribution?',
- 'What are the potential ethical concerns related to AI coin technology?',
- 'How do AI coins plan to compete with established cryptocurrencies like '
- 'Ethereum?',
- 'Are there any AI coin projects focused on the healthcare or finance sectors?',
- 'What is the market sentiment regarding AI coins among investors?',
- 'How do AI coins address the issue of bias in AI algorithms?',
- 'Are there AI coin projects dedicated to improving accessibility and '
- 'inclusivity?',
- 'What is the role of AI in optimizing transaction speeds for AI coins?',
- 'Can AI coins be used for automated trading and algorithmic trading '
- 'strategies?',
- 'How do AI coins aim to enhance user experience and user interface design?',
- 'Are there any AI coin projects targeting the Internet of Things (IoT) space?',
- 'What is the roadmap for AI coin development and adoption?',
- 'How do AI coins plan to handle interoperability with other cryptocurrencies?',
- 'Are there AI coin projects that focus on decentralized AI model training?',
- 'How do AI coins tackle the challenge of data privacy in AI-driven '
- 'applications?',
- 'What is the role of AI in AI coin governance and decision-making processes?',
- 'How do AI coins plan to attract developers and foster a developer community?',
- 'Are there AI coin projects with a focus on environmental sustainability?',
- 'What are the future prospects for AI coins in the cryptocurrency market?',
- 'How do AI coins address the issue of data ownership and control?',
- 'Can AI coins be used for decentralized autonomous organizations (DAOs) and '
- 'governance?']
+QUESTIONS =['What is the connection between cryptocurrency and the city of Chungju?',
+ 'Are there any cryptocurrency businesses or exchanges operating in Chungju?',
+ 'How does Chungju City view the adoption of cryptocurrencies?',
+ "Can you explain the impact of cryptocurrency on Chungju's economy?",
+ 'Are there any cryptocurrency-related events or conferences held in Chungju?',
+ 'What cryptocurrency regulations are in place in Chungju?',
+ 'Are there any blockchain startups based in Chungju?',
+ 'How are cryptocurrency transactions taxed in Chungju?',
+ 'Does Chungju City promote blockchain technology development?',
+ 'Are there any cryptocurrency mining activities in Chungju?',
+ 'Have there been any cryptocurrency-related scams reported in Chungju?',
+ 'How does the local government of Chungju support blockchain innovation?',
+ 'Are there any cryptocurrency ATMs in Chungju?',
+ 'What is the level of cryptocurrency adoption among Chungju residents?',
+ 'Are there any educational programs on cryptocurrency and blockchain in '
+ 'Chungju?',
+ 'How does Chungju City regulate Initial Coin Offerings (ICOs)?',
+ 'Are there any cryptocurrency meetups or communities in Chungju?',
+ 'Does Chungju have any plans to issue its own cryptocurrency?',
+ 'How does Chungju City ensure the security of cryptocurrency users?',
+ 'What is the stance of Chungju City on decentralized finance (DeFi)?',
+ 'Are there any notable cryptocurrency investors or companies headquartered in '
+ 'Chungju?',
+ 'How does Chungju City address the environmental concerns of cryptocurrency '
+ 'mining?',
+ 'What are the potential benefits of cryptocurrency for businesses in Chungju?',
+ 'Are there any cryptocurrency-related research institutions in Chungju?',
+ 'How does Chungju City promote blockchain-based solutions for public '
+ 'services?',
+ 'What are the challenges faced by cryptocurrency businesses in Chungju?',
+ 'Does Chungju City collaborate with blockchain projects for urban '
+ 'development?',
+ 'How does Chungju City ensure the legality of cryptocurrency transactions?',
+ 'Are there any cryptocurrency trading restrictions for residents of Chungju?',
+ 'Does Chungju City plan to integrate blockchain technology into its '
+ 'administrative processes?',
+ 'Are there any regulations on cryptocurrency advertising in Chungju?',
+ 'How does Chungju City protect consumers from cryptocurrency fraud?',
+ 'Are there any partnerships between Chungju City and blockchain companies?',
+ 'Does Chungju have a strategy for attracting cryptocurrency investment?',
+ "What is the role of blockchain in Chungju's smart city initiatives?",
+ 'How does Chungju City address the energy consumption concerns of '
+ 'cryptocurrency mining?',
+ 'Are there any cryptocurrency-related job opportunities in Chungju?',
+ 'How does Chungju City educate its residents about cryptocurrency risks?',
+ 'Does Chungju City have a blockchain-based voting system?',
+ 'How does Chungju City handle cryptocurrency donations for charitable '
+ 'purposes?',
+ 'Are there any local businesses in Chungju that accept cryptocurrency '
+ 'payments?',
+ 'How does Chungju City balance the innovation potential of cryptocurrency '
+ 'with regulatory concerns?',
+ 'Are there any government grants or incentives for cryptocurrency startups in '
+ 'Chungju?',
+ 'How does Chungju City collaborate with universities on blockchain research?',
+ "What is the role of cryptocurrency in Chungju's tourism industry?",
+ 'Are there any cryptocurrency trading competitions or events in Chungju?',
+ 'How does Chungju City approach the issue of cryptocurrency price volatility?',
+ 'Are there any cryptocurrency-related art or cultural events in Chungju?',
+ 'What is the role of blockchain in land and property records in Chungju?',
+ 'How does Chungju City engage with the global cryptocurrency community?']
 REFERRAL_LINKS = [
     "https://qna3.ai/?code=kpKpcujE", #0~19번
     "https://qna3.ai/?code=H58QpM6s", #20~39번 계정2
@@ -169,12 +168,13 @@ class ChromeController:
         time.sleep(LONG_WAIT_TIME)
         self.log_out()
         self.log_in()
-        while self.send_qna() != True:
-            print("답변을 생성하지 못해 재질문합니다 ... ")
-        self.vote(0)
+        #while self.send_qna() != True:
+        #    print("답변을 생성하지 못해 재질문합니다 ... ")
+        #self.vote(0)
         #self.vote(1)
         #self.vote(2)
-        self.switch_to_opbnb()
+        #self.switch_to_opbnb()
+        self.check_in()
         self.check_in()
         print(f">>{account_number}번 완료")
 
@@ -227,7 +227,7 @@ class ChromeController:
         time.sleep(SHORT_WAIT_TIME)
         while True:
             self.driver.refresh()
-            time.sleep(SHORT_WAIT_TIME)
+            time.sleep(LONG_WAIT_TIME)
             if not self.confirm_network() and not self.confirm_sign() and not self.confirm_transaction():
                 break            
         self.driver.switch_to.window(self.all_tabs[1])
@@ -269,7 +269,7 @@ class ChromeController:
                 print("트랜잭션 버튼 활성화 대기중...")  
                 time.sleep(SHORT_WAIT_TIME)
         try:
-            reject_button = self.driver.find_element("xpath", "//button[contains(text(),'취소')]")
+            reject_button = self.driver.find_element("xpath", "//button[contains(text(),'거부')]")
             reject_button.click()
             print("트랜잭션 버튼 로딩 오류로 거부 버튼 클릭")
             time.sleep(SHORT_WAIT_TIME)
@@ -285,7 +285,7 @@ class ChromeController:
             print("이미 출석되어있습니다")
             return
         check_in_button.click()
-        time.sleep(SHORT_WAIT_TIME)
+        time.sleep(LONG_WAIT_TIME)
         self.confirm_network_and_sign_and_transaction()
         time.sleep(LONG_WAIT_TIME)
         print("출석 완료")
@@ -296,7 +296,7 @@ class ChromeController:
                 print("이미 opBNB체인입니다")
                 return
         chain_button.click()
-        time.sleep(SHORT_WAIT_TIME)
+        time.sleep(LONG_WAIT_TIME)
         self.confirm_network_and_sign_and_transaction()
         time.sleep(SHORT_WAIT_TIME)
         print("출석체크 위해 opBNB 네트워크로 전환 완료")
