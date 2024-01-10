@@ -124,10 +124,16 @@ REFERRAL_LINKS = [
 
 
 class ChromeController:
+    def __init__(self):
+        with open('./secrets.json') as f:
+            secret_data = json.load(f)
+            self.metamask_password = secret_data["metamask_password"]
+            self.user_data_dir = secret_data["user_data_dir"]
+
 
     def open_browser(self):
         options = Options()
-        options.add_argument(f"user-data-dir={user_data_dir}")
+        options.add_argument(f"user-data-dir={self.user_data_dir}")
         options.add_argument(f"--profile-directory=profile 1")
         options.add_experimental_option("detach", True)
         service = Service(ChromeDriverManager().install())
@@ -136,12 +142,11 @@ class ChromeController:
         self.all_tabs = self.driver.window_handles
         self.wait = WebDriverWait(self.driver, LONG_WAIT_TIME)
         self.driver.implicitly_wait(LONG_WAIT_TIME)
-
         self.metamask_controller = MetamaskController(driver=self.driver, all_tabs=self.all_tabs, wait= self.wait)
         time.sleep(SHORT_WAIT_TIME)
 
     def work(self):
-        self.metamask_controller.login()
+        self.metamask_controller.login(self.metamask_password)
         for i in range(START_ACCOUNT_NUM, END_ACCOUNT_NUM):
             self.perform_task(i)
         print(f"{START_ACCOUNT_NUM} ~ {END_ACCOUNT_NUM-1} 진행 완료되었습니다")
@@ -178,7 +183,7 @@ class ChromeController:
         self.driver.delete_all_cookies()
         self.driver.quit()
         self.open_browser()
-        self.metamask_controller.login()
+        self.metamask_controller.login(self.metamask_password)
 
     def logout(self):
         try:
@@ -191,6 +196,7 @@ class ChromeController:
         connect_wallet_buttons = self.driver.find_elements("xpath",  "//*[contains(text(),'Connect Wallet')]")
         connect_wallet_buttons[-1].click()
         try:
+            time.sleep(SHORT_WAIT_TIME)
             wallet_select_button = self.driver.find_element(By.XPATH, '/html/body/div[16]/div/div/div[2]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/button/div/div')
             self.wait.until(
                 EC.element_to_be_clickable(wallet_select_button)
@@ -273,7 +279,7 @@ class MetamaskController:
         self.wait = wait
         
         
-    def login(self):
+    def login(self, password):
         self.driver.switch_to.window(self.all_tabs[0])
         self.driver.get("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html")
         try:
@@ -283,7 +289,7 @@ class MetamaskController:
         except Exception as e:
             print(e)
             raise RuntimeError("메타마스크 로그인 인풋이 로드되지 않습니다.")
-        password_input.send_keys(metamask_password)
+        password_input.send_keys(password)
         self.driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div[2]/div/div/button').click()
         time.sleep(SHORT_WAIT_TIME)
 
@@ -340,19 +346,15 @@ class MetamaskController:
             return result
     
 
-    
-try:
-    with open('./secrets.json') as f:
-                secret_data = json.load(f)
-                metamask_password = secret_data["metamask_password"]
-                user_data_dir = secret_data["user_data_dir"]
-    chrome_controller = ChromeController()
-    chrome_controller.open_browser()
-    if IS_SETTING_MODE:
-        print("설정을 위해 봇을 실행하지 않습니다.")
-    else:
-        chrome_controller.work()
-except Exception as e:
-    print(e)
-    message_sender.send_telegram_message("qna봇 재실행 필요한 오류 발생")
+if __name__ == "__main__":
+    try:
+        chrome_controller = ChromeController()
+        chrome_controller.open_browser()
+        if IS_SETTING_MODE:
+            print("설정을 위해 봇을 실행하지 않습니다.")
+        else:
+            chrome_controller.work()
+    except Exception as e:
+        print(e)
+        message_sender.send_telegram_message("qna봇 재실행 필요한 오류 발생")
 
