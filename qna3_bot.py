@@ -130,7 +130,6 @@ class ChromeController:
             self.metamask_password = secret_data["metamask_password"]
             self.user_data_dir = secret_data["user_data_dir"]
 
-
     def open_browser(self):
         options = Options()
         options.add_argument(f"user-data-dir={self.user_data_dir}")
@@ -214,15 +213,17 @@ class ChromeController:
             print("이미 출석되어있습니다")
             return
         check_in_button.click()
-        while not self.metamask_controller.confirm_transaction():
+        while not self.metamask_controller.confirm_transaction() and check_in_button.is_enabled:
             check_in_button.click()
-        while True:
+        for i in range(10):
             try:
                 self.driver.find_element(By.XPATH, "//button[contains(text(),'Claim Credits')]")
-                break
+                print("출석 완료")
+                return
             except:
                 pass
-        print("출석 완료")
+        raise RuntimeError("출석이 완료되지 않습니다..")
+        
 
     def switch_to_opbnb(self):
         chain_button = self.driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]")
